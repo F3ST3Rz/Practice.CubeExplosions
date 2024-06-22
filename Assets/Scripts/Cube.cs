@@ -1,51 +1,39 @@
-using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 [RequireComponent(typeof(Sharer), typeof(Exploder))]
 public class Cube : MonoBehaviour
 {
+    [SerializeField] private float _chanceSplit = 1f;
+
     private Sharer _sharer;
     private Exploder _exploder;
-    private int _minRangeNewObjects = 2;
-    private int _maxRangeNewObjects = 6;
-    private float _minRangeChanceSplit = 0f;
-    private float _maxRangeChanceSplit = 1f;
-    private float _chanceSplit = 1f;
+    private float _totalScale;
+    
+    public float ChanceSplit => _chanceSplit;
 
     private void Start()
     {
-        _sharer = GetComponent<Sharer>();
         _exploder = GetComponent<Exploder>();
+        _sharer = GetComponent<Sharer>();
+
+        _totalScale = Mathf.Sqrt(Mathf.Pow(transform.localScale.x, 2) + Mathf.Pow(transform.localScale.y, 2) + Mathf.Pow(transform.localScale.z, 2));
     }
 
-    public void Destroy()
+    public void Destroy(bool isSeparate)
     {
-        TrySeparate();
+        if (isSeparate)
+            _sharer.Separate();
+        else
+            _exploder.Explode(_totalScale);
+
         GameObject.Destroy(gameObject);
     }
 
-    public void ChangeScale(float value)
-    {
-        transform.localScale /= value;
-    }
-
-    public void ChangeSplit(float value)
+    public void ChangeObject(float value)
     {
         _chanceSplit /= value;
-    }
-
-    private void TrySeparate()
-    {
-        if (Random.Range(_minRangeChanceSplit, _maxRangeChanceSplit) <= _chanceSplit)
-        {
-            int countNewObjects = Random.Range(_minRangeNewObjects, _maxRangeNewObjects);
-            List<Rigidbody> explodableObjects = new List<Rigidbody>();
-
-            for (int i = 0; i < countNewObjects; i++)
-                explodableObjects.Add(_sharer.Spawn());
-
-            _exploder.Explode(explodableObjects);
-        }
+        transform.localScale /= value;
     }
 }
 
