@@ -1,15 +1,13 @@
-using System.Xml.Serialization;
 using UnityEngine;
 
 [RequireComponent(typeof(Sharer), typeof(Exploder))]
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private float _chanceSplit = 1f;
-
+    private float _chanceSplit = 1f;
     private Sharer _sharer;
     private Exploder _exploder;
     private float _totalScale;
-    
+
     public float ChanceSplit => _chanceSplit;
 
     private void Start()
@@ -30,10 +28,15 @@ public class Cube : MonoBehaviour
         GameObject.Destroy(gameObject);
     }
 
-    public void ChangeObject(float value)
+    public void ChangeChanceSplit(float chanceSplit, float divider)
     {
-        _chanceSplit /= value;
-        transform.localScale /= value;
+        _chanceSplit = chanceSplit;
+        _chanceSplit /= divider;
+    }
+
+    public void ChangeScale(float divider)
+    {
+        transform.localScale /= divider;
     }
 }
 

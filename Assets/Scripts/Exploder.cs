@@ -4,10 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Exploder : MonoBehaviour
 {
-    float _minExplosionForce = 50f;
-    float _minExplosionRadius = 10f;
-    float _maxExplosionForce = 500f;
-    float _maxExplosionRadius = 100f;
+    [SerializeField] private float _minExplosionForce = 50f;
+    [SerializeField] private float _minExplosionRadius = 10f;
+    [SerializeField] private float _maxExplosionForce = 500f;
+    [SerializeField] private float _maxExplosionRadius = 100f;
 
     public void Explode(float totalScale)
     {

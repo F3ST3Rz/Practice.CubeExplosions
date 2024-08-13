@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Cube))]
@@ -14,20 +14,21 @@ public class Sharer : MonoBehaviour
         _cube = GetComponent<Cube>();
     }
 
+    private void Spawn()
+    {
+        var newCube = Instantiate(_cube);
+        newCube.ChangeScale(_divider);
+        newCube.ChangeChanceSplit(_cube.ChanceSplit, _divider);
+        newCube.gameObject.SetActive(true);
+        newCube.enabled = true;
+    }
+
     public void Separate()
     {
         int countNewObjects = Random.Range(_minRangeNewObjects, _maxRangeNewObjects);
 
         for (int i = 0; i < countNewObjects; i++)
             Spawn();
-    }
-
-    private void Spawn()
-    {
-        var newCube = Instantiate(_cube);
-        newCube.gameObject.SetActive(true);
-        newCube.enabled = true;
-        newCube.ChangeObject(_divider);
     }
 }
 
